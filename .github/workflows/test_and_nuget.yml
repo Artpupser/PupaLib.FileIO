@@ -73,4 +73,4 @@ jobs:
         run: dotnet nuget add source --username ${{ env.GITHUB_USERNAME }} --password ${{ secrets.GIT_AUTH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ env.GITHUB_USERNAME }}/index.json"
       
       - name: "Push package GITHUB"
-        run: dotnet nuget push ${{ env.OUTPUT_NUPKG_FILE }} -k ${{ secrets.GIT_AUTH_TOKEN }} -s "github"
+        run: dotnet nuget push --skip-duplicate ${{ env.OUTPUT_NUPKG_FILE }} -k ${{ secrets.GIT_AUTH_TOKEN }} -s "github"
