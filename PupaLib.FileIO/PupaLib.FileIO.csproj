@@ -13,8 +13,12 @@
         <Copyright>Copyright MIT LICENSE 2026</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>This is an incredibly simple library for working with files and folders.</Description>
-        <PackageReadmeFile>../PACKAGE.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>File, Folder, Directory, Create, Delete, Change, Simple, Lib</PackageTags>
         <RepositoryUrl>https://github.com/Artpupser/PupaLib.FileIO.git</RepositoryUrl>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
 </Project>
