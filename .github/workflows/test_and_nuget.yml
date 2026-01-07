@@ -69,8 +69,8 @@ jobs:
       - name: "Push package NUGET"
         run: dotnet nuget push --skip-duplicate ${{ env.OUTPUT_NUPKG_FILE }} -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URI }}
       
-      - name: "Push package GITHUB"
-        run: dotnet nuget add source --username ${{ env.GITHUB_USERNAME }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ env.GITHUB_USERNAME }}/index.json"
+      - name: "Add source for github"
+        run: dotnet nuget add source --username ${{ env.GITHUB_USERNAME }} --password ${{ secrets.GIT_AUTH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ env.GITHUB_USERNAME }}/index.json"
       
-      - name: ""
-        run: dotnet nuget push ${{ env.OUTPUT_NUPKG_FILE }} -k ${{ secrets.GITHUB_TOKEN }} -s "github"
+      - name: "Push package GITHUB"
+        run: dotnet nuget push ${{ env.OUTPUT_NUPKG_FILE }} -k ${{ secrets.GIT_AUTH_TOKEN }} -s "github"
