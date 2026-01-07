@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <PackageId>PupaLib.FileIO</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Artpupser</Authors>
+        <Owners>Artpupser</Owners>
+        <Company>Artpupser</Company>
+        <Copyright>Copyright MIT LICENSE 2026</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>This is an incredibly simple library for working with files and folders.</Description>
+        <PackageReadmeFile>../PACKAGE.md</PackageReadmeFile>
+        <PackageTags>File, Folder, Directory, Create, Delete, Change, Simple, Lib</PackageTags>
+        <RepositoryUrl>https://github.com/Artpupser/PupaLib.FileIO.git</RepositoryUrl>
+    </PropertyGroup>
+</Project>
