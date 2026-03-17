@@ -8,7 +8,7 @@
 
 ![NuGet](https://img.shields.io/nuget/v/PupaLib.FileIO.svg)
 
-#### PupaLib.FileIO is an incredibly simple library for working with files and folders. 🎯
+#### [PupaLib.FileIO](https://www.nuget.org/packages/PupaLib.FileIO) is an incredibly simple library for working with files and folders. 🎯
 
 ---
 
