@@ -3,29 +3,48 @@ using System.Text.Json.Serialization;
 
 namespace PupaLib.FileIO.Example.Objects;
 
+/// <summary>
+/// Sample object for JSON serialization demos.
+/// </summary>
 [System.Serializable]
 public sealed class ExampleObject {
-  private string _name;
-  private List<int> _numbers;
-  private string _lastname;
+   /// <summary>
+   /// Creates example object with name, lastname and numbers list.
+   /// Used by JSON deserializer.
+   /// </summary>
+   /// <param name="name">Person's first name</param>
+   /// <param name="lastname">Person's last name</param>
+   /// <param name="numbers">List of numbers</param>
+   [JsonConstructor]
+   public ExampleObject(string name, string lastname, List<int> numbers) {
+      Name = name;
+      Lastname = lastname;
+      Numbers = numbers;
+   }
 
-  [JsonConstructor]
-  public ExampleObject(string name, string lastname, List<int> numbers) {
-    _name = name;
-    _lastname = lastname;
-    _numbers = numbers;
-  }
+   /// <summary>
+   /// Returns formatted object info: Name, Lastname, Numbers.
+   /// </summary>
+   /// <returns>Multi-line string with object details</returns>
+   public override string ToString() {
+      return $"Name: {Name}\nLastname: {Lastname}\nNumbers: {string.Join(',', Numbers)}";
+   }
 
-  public override string ToString() {
-    return $"Name: {_name}\nLastname: {_lastname}\nNumbers: {string.Join(',', _numbers)}";
-  }
+   /// <summary>
+   /// Person's first name.
+   /// </summary>
+   [JsonPropertyName("Name")]
+   public string Name { get; init; }
 
-  [JsonPropertyName("Name")]
-  public string Name => _name;
+   /// <summary>
+   /// Person's last name.
+   /// </summary>
+   [JsonPropertyName("Lastname")]
+   public string Lastname { get; init; }
 
-  [JsonPropertyName("Numbers")]
-  public List<int> Numbers => _numbers;
-
-  [JsonPropertyName("Lastname")]
-  public string Lastname => _lastname;
+   /// <summary>
+   /// List of integer numbers.
+   /// </summary>
+   [JsonPropertyName("Numbers")]
+   public List<int> Numbers { get; init; }
 }

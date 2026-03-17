@@ -1,4 +1,5 @@
 ﻿# 🧪️ PupaLib.FileIO
+
 ![C#](https://img.shields.io/badge/CSHARP-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 ![Dotnet](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Nuget](https://img.shields.io/badge/NuGet-004880?style=for-the-badge&logo=nuget&logoColor=white)
@@ -12,12 +13,13 @@
 ---
 
 ## 🗝️ Key Features
-| 🏆 Feature              | 📝 Description                                         |
-|------------------------|-----------------------------------------------------|
-| **Easy to Use**        | Simplifies file manipulation tasks 🛠️               |
+
+| 🏆 Feature                  | 📝 Description                                                            |
+|-----------------------------|---------------------------------------------------------------------------|
+| **Easy to Use**             | Simplifies file manipulation tasks 🛠️                                    |
 | **Versatile Functionality** | - Create new files and folders 📂<br>- Read and write data efficiently 📄 |
-| **Cross-Platform Support** | Works seamlessly across different operating systems 🌍 |
-| **Lightweight**        | Minimal impact on performance ⚡        |
+| **Cross-Platform Support**  | Works seamlessly across different operating systems 🌍                    |
+| **Lightweight**             | Minimal impact on performance ⚡                                           |
 
 ## 🚀 Installation
 
@@ -34,6 +36,7 @@ Install-Package PupaLib.FileIO
 ```
 
 ## 💡 Usage
+
 ### 🛠️ File or Folder Creation
 
 Create a file:
@@ -42,7 +45,9 @@ Create a file:
 var path = "./path/file_name.txt";
 var file = VirtualFile.CreateFile(path);
 ```
+
 Create a folder:
+
 ```csharp
 var path = "./path/folder_name";
 var folder = VirtualFile.CreateFolder(path);
@@ -61,7 +66,9 @@ if(file is not null) {
     Console.WriteLine($"File not exists")
 }
 ```
+
 Check for a folder:
+
 ```csharp
 var path = "./path/folder_name";
 var folder = VirtualFolder.GetFolder(path);
@@ -71,6 +78,7 @@ if(folder is not null) {
     Console.WriteLine($"Folder not exists")
 }
 ```
+
 ### 📝 Write and Read Files
 
 Writing to a text file:
@@ -100,6 +108,7 @@ if(file is not null) {
   Console.WriteLine(file.GetInfo());
 }
 ```
+
 ### 🗑️ Delete File and Folder
 
 Deleting a file:

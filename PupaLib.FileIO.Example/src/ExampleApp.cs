@@ -1,105 +1,116 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+
 using PupaLib.FileIO.Example.Extensions;
 using PupaLib.FileIO.Example.Objects;
 using PupaLib.FileIO.Serializers;
 
 namespace PupaLib.FileIO.Example;
 
+/// <summary>
+/// Demonstrates PupaLib.FileIO library usage.
+/// </summary>
 public static class ExampleApp {
-  public static async Task Main(string[] args) {
-    Console.WriteLine("Hello PupaLib.FileIO.Example!");
-    await Example1();
-    await Example2();
-    await Example3_1();
-    await Example3_2();
-    await Example4();
-    await Example5();
-    await Example6();
-    Console.WriteLine("Press any key to exit...");
-    Console.ReadKey(true);
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Sample filename used in examples: "file.txt".
+   /// </summary>
+   public const string ExampleFileName = "file.txt";
 
-  //Creation file
-  public static async Task Example1() {
-    var fileName = "file.txt";
-    var file = VirtualIo.RootFolder.CreateFileIn(fileName); // Create file with name file.txt
-    Console.WriteLine(file.GetInfo());
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Sample folder name used in examples: "folder".
+   /// </summary>
+   public const string ExampleFolderName = "folder";
 
-  //Load file if exists 
-  public static async Task Example2() {
-    var fileName = "file.txt";
-    var file = VirtualIo.RootFolder.GetFileIn(fileName); // Gets file with name file.txt 
-    if(file is not null) {
-      //Check file on nullable
-      Console.WriteLine(file.GetInfo());
-    }
+   /// <summary>
+   /// Runs all FileIO examples sequentially.
+   /// </summary>
+   public static async Task Main() {
+      var cts = new CancellationTokenSource();
+      cts.CancelAfter(TimeSpan.FromSeconds(10));
+      Console.WriteLine("Hello PupaLib.FileIO.Example!");
+      Example1();
+      await Example2(cts.Token);
+      await Example3_1(cts.Token);
+      await Example3_2(cts.Token);
+      Example4();
+      Example5();
+      Example6();
+   }
 
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Creates a file if it doesn't exist and shows file info.
+   /// </summary>
+   public static void Example1() {
+      var file = VirtualIo.RootFolder.GetOrCreateFileIn(ExampleFileName);
+      Console.Write($"{file.GetInfo()}\n");
+   }
 
-  //Write and read content in file
-  public static async Task Example3_1() {
-    var fileName = "file.txt";
-    var file = VirtualIo.RootFolder.GetFileIn(fileName);
-    if(file is not null) {
-      var content = "Hello world!";
-      await file.WriteStringAsync(content); // Write file
-      Console.WriteLine($"Writes content [{content}] in file");
-      Console.WriteLine($"File content: {await file.ReadStringAsync()}"); //Read file
-      Console.WriteLine(file.GetInfo());
-    }
+   /// <summary>
+   /// Loads existing file or shows null if not found.
+   /// </summary>
+   public static async Task Example2(CancellationToken cancellationToken) {
+      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (file is not null)
+         Console.Write($"{file.GetInfo()}\n");
+      await Task.CompletedTask;
+   }
 
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Writes and reads plain text content to/from file.
+   /// </summary>
+   public static async Task Example3_1(CancellationToken cancellationToken) {
+      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (file is not null) {
+         const string content = "Hello world!";
+         await file.WriteStringAsync(content, cancellationToken);
+         Console.Write(
+            $"Written: [{content}]\nRead: {await file.ReadStringAsync(cancellationToken)}\n{file.GetInfo()}\n");
+      }
 
-  public static async Task Example3_2() {
-    var fileName = "file.txt";
-    var file = VirtualIo.RootFolder.GetFileIn(fileName);
-    if(file is not null) {
-      var content = new ExampleObject("Name", "Lastname", [12, 53, 47]);
-      file.WriteTContent<ExampleObject>(content, new JsonSystemSerializer()); // Write and serialize file
-      Console.WriteLine($"Writes content [\n{content}\n] in file");
-      Console.WriteLine(
-        $"File content: {file.ReadTContent<ExampleObject>(new JsonSystemSerializer())}"); //Read and deserialize file
-      Console.WriteLine(file.GetInfo());
-    }
+      await Task.CompletedTask;
+   }
 
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Serializes and deserializes object to/from JSON file.
+   /// </summary>
+   public static async Task Example3_2(CancellationToken cancellationToken) {
+      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (file is not null) {
+         var content = new ExampleObject("Name", "Lastname", [12, 53, 47]);
+         await file.WriteTContentAsync(content, new JsonSystemSerializer(), cancellationToken);
+         Console.Write(
+            $"Written object:\n{content}\nRead object:{file.ReadTContent<ExampleObject>(new JsonSystemSerializer())}\n{file.GetInfo()}");
+      }
 
-  //Deleting file
-  public static async Task Example4() {
-    var fileName = "file.txt";
-    var file = VirtualIo.RootFolder.GetFileIn(fileName);
-    if(file is not null) {
-      file.DeleteMe(); // Delete file
-      Console.WriteLine($"File deleted, exists: {file.Exists}");
-    }
+      await Task.CompletedTask;
+   }
 
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Deletes the example file.
+   /// </summary>
+   public static void Example4() {
+      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (file is null) return;
+      file.DeleteMe();
+      Console.Write($"File deleted, exists: {file.Exists}\n");
+   }
 
-  //Creating folder in root folder
-  public static async Task Example5() {
-    var folderName = "folder";
-    var folder = VirtualIo.RootFolder.CreateFolderIn(folderName);
-    Console.WriteLine(folder.GetInfo());
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Creates example folder if it doesn't exist.
+   /// </summary>
+   public static void Example5() {
+      var folder = VirtualIo.RootFolder.GetOrCreateFolderIn(ExampleFolderName);
+      Console.Write($"{folder.GetInfo()}\n");
+   }
 
-  //Delete folder
-  public static async Task Example6() {
-    var folderName = "folder";
-    var folder = VirtualIo.RootFolder.GetFolderIn(folderName);
-    if(folder is not null) {
-      folder.DeleteMe(); //Delete folder
-      Console.WriteLine($"Folder deleted, exists: {folder.Exists}");
-    }
-
-    await Task.CompletedTask;
-  }
+   /// <summary>
+   /// Deletes the example folder.
+   /// </summary>
+   public static void Example6() {
+      var folder = VirtualIo.RootFolder.GetFolderIn(ExampleFolderName);
+      if (folder is null) return;
+      folder.DeleteMe();
+      Console.Write($"Folder deleted, exists: {folder.Exists}\n");
+   }
 }
