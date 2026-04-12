@@ -17,8 +17,6 @@
 <img src="https://github.com/Artpupser/PupaLib.FileIO/blob/main/assets/banner.jpg" style="border-radius: 20px; max-height: 500px">
 
 </div>
----
-
 
 ## 📜 Content
 - [🗝️ Key Features](#-key-features)
