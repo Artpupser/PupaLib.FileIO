@@ -6,8 +6,8 @@ on:
       - "main"
 
 env:
-  PROJECT_LIB_PATH: 'PupaLib.FileIO/PupaLib.FileIO.csproj'
-  PROJECT_TESTS_PATH: 'PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
+  PROJECT_LIB_PATH: 'src/PupaLib.FileIO/PupaLib.FileIO.csproj'
+  PROJECT_TESTS_PATH: 'src/PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
 
 jobs:
   test:
