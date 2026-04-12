@@ -1,0 +1,7 @@
+<Solution>
+    <Folder Name="/src/">
+        <Project Path="src/PupaLib.FileIO.Example/PupaLib.FileIO.Example.csproj"/>
+        <Project Path="src/PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj"/>
+        <Project Path="src/PupaLib.FileIO/PupaLib.FileIO.csproj"/>
+    </Folder>
+</Solution>

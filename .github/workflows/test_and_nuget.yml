@@ -6,8 +6,8 @@ on:
       - 'v*'
 
 env:
-  PROJECT_LIB_PATH: 'PupaLib.FileIO/PupaLib.FileIO.csproj'
-  PROJECT_TESTS_PATH: 'PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
+  PROJECT_LIB_PATH: 'src/PupaLib.FileIO/PupaLib.FileIO.csproj'
+  PROJECT_TESTS_PATH: 'src/PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
   PACKAGE_OUTPUT_DIR: ${{ github.workspace }}/output
   OUTPUT_NUPKG_FILE: ${{ github.workspace }}/output/*.nupkg
   NUGET_SOURCE_URI: "https://api.nuget.org/v3/index.json"
@@ -24,7 +24,7 @@ jobs:
       - name: "Setup dotnet"
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       
       - name: "Resotore lib project"
         run: dotnet restore ${{ env.PROJECT_LIB_PATH }}
@@ -51,7 +51,7 @@ jobs:
       - name: "Setup dotnet"
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       
       - name: "Restore package"
         run: dotnet restore ${{ env.PROJECT_LIB_PATH }}

@@ -1,16 +1,30 @@
-﻿# 🧪️ PupaLib.FileIO
+﻿<div align="center">
 
-![C#](https://img.shields.io/badge/CSHARP-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
-![Dotnet](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![Nuget](https://img.shields.io/badge/NuGet-004880?style=for-the-badge&logo=nuget&logoColor=white)
-![Github]( https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+# PupaLib.FileIO
+
+![C#](https://img.shields.io/badge/C%23-black.svg?style=for-the-badge&logo=csharp&logoColor=white)
+![Dotnet](https://img.shields.io/badge/.NET-black?style=for-the-badge&logo=dotnet&logoColor=white)
+![Nuget](https://img.shields.io/badge/NuGet-black?style=for-the-badge&logo=nuget&logoColor=white)
+![Github]( https://img.shields.io/badge/GitHub-black?style=for-the-badge&logo=github&logoColor=white)
 ![License](https://img.shields.io/badge/MIT-black?style=for-the-badge)
 
-![NuGet](https://img.shields.io/nuget/v/PupaLib.FileIO.svg)
+![NuGet](https://img.shields.io/nuget/v/PupaLib.FileIO.svg?style=for-the-badge)
+![.NET](https://img.shields.io/badge/.NET-10.0-blue?style=for-the-badge)
+
 
 #### [PupaLib.FileIO](https://www.nuget.org/packages/PupaLib.FileIO) is an incredibly simple library for working with files and folders. 🎯
 
+<img src="https://github.com/Artpupser/PupaLib.FileIO/blob/main/assets/banner.jpg" style="border-radius: 20px; max-height: 500px">
+
+</div>
 ---
+
+
+## 📜 Content
+- [🗝️ Key Features](#-key-features)
+- [🚀️ Installation](#-installation)
+- [🗃️ Devlog](#-devlog)
+- [⚖️️ License](#-license)
 
 ## 🗝️ Key Features
 
@@ -132,3 +146,12 @@ if(folder is not null) {
   Console.WriteLine($"Folder deleted, exists: {folder.Exists}");
 }
 ```
+
+## 🗃️ Devlog
+
+### 1.2.1
+- Changed .NET SDK version, .net8.0 -> .net10.0 
+
+## ⚖️ License
+
+This project is licensed under the MIT License.
