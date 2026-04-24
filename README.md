@@ -151,7 +151,8 @@ if(folder is not null) {
 
 - Added: field 'RestorePackagesWithLockFile' in 'PropertyGroup' -> *.csproj
 - Added: PupaLib.Core
-- Changes: Operations through Option<T>
+- Changes: New check system through Option<T\> used PupaLib.Core
+- Rewrite: Usage in readme
 
 ### 1.2.1
 

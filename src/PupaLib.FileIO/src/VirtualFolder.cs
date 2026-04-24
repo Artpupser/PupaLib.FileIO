@@ -109,7 +109,7 @@ public class VirtualFolder {
          var value = new VirtualFolder(path);
          Cache.TryAdd(path, value);
          return Option<VirtualFolder>.Ok(value);
-      } catch (Exception e) {
+      } catch {
          return Option<VirtualFolder>.Fail();
       }
    }
