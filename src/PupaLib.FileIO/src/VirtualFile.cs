@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
+using PupaLib.Core;
 using PupaLib.FileIO.Serializers;
 
 namespace PupaLib.FileIO;
@@ -16,7 +17,7 @@ public class VirtualFile {
 
    public string Name => _info.Name;
 
-   public VirtualFolder? Parent => VirtualFolder.GetFolder(Path.GetDirectoryName(MyPath));
+   public Option<VirtualFolder> Parent => VirtualFolder.GetFolder(Path.GetDirectoryName(MyPath));
 
    public string NameWithoutExtension => Path.GetFileNameWithoutExtension(MyPath);
 
@@ -56,20 +57,37 @@ public class VirtualFile {
       await File.WriteAllTextAsync(MyPath, content, cancellationToken);
    }
 
-   public byte[] ReadBytes() {
-      return File.ReadAllBytes(MyPath);
+   public Option<byte[]> ReadBytes() {
+      try {
+         return Option<byte[]>.Ok(File.ReadAllBytes(MyPath));
+      } catch {
+         return Option<byte[]>.Fail();
+      }
    }
 
-   public async Task<byte[]> ReadBytesAsync(CancellationToken cancellationToken = default) {
-      return await File.ReadAllBytesAsync(MyPath, cancellationToken);
+   public async Task<Option<byte[]>> ReadBytesAsync(CancellationToken cancellationToken = default) {
+      try {
+         var bytes = await File.ReadAllBytesAsync(MyPath, cancellationToken);
+         return Option<byte[]>.Ok(bytes);
+      } catch {
+         return Option<byte[]>.Fail();
+      }
    }
 
-   public string ReadString() {
-      return File.ReadAllText(MyPath);
+   public Option<string> ReadString() {
+      try {
+         return Option<string>.Ok(File.ReadAllText(MyPath));
+      } catch {
+         return Option<string>.Fail();
+      }
    }
 
-   public async Task<string> ReadStringAsync(CancellationToken cancellationToken = default) {
-      return await File.ReadAllTextAsync(MyPath, cancellationToken);
+   public async Task<Option<string>> ReadStringAsync(CancellationToken cancellationToken = default) {
+      try {
+         return Option<string>.Ok(await File.ReadAllTextAsync(MyPath, cancellationToken));
+      } catch {
+         return Option<string>.Fail();
+      }
    }
 
    public void WriteTContent<T>(T content, ISerializer serializer) where T : class {
@@ -84,38 +102,54 @@ public class VirtualFile {
    }
 
 
-   public T ReadTContent<T>(ISerializer serializer) where T : class {
-      var bytes = ReadBytes();
-      return serializer.Deserialize<T>(bytes);
+   public Option<T> ReadTContent<T>(ISerializer serializer) where T : class {
+      try {
+         var bytesOption = ReadBytes();
+         return !bytesOption.Out(out var bytes) ? Option<T>.Fail() : Option<T>.Ok(serializer.Deserialize<T>(bytes));
+      } catch {
+         return Option<T>.Fail();
+      }
    }
 
-   public async Task<T> ReadTContentAsync<T>(ISerializer serializer, CancellationToken cancellationToken = default)
+   public async Task<Option<T>> ReadTContentAsync<T>(ISerializer serializer,
+      CancellationToken cancellationToken = default)
       where T : class {
-      var bytes = await ReadBytesAsync(cancellationToken);
-      return serializer.Deserialize<T>(bytes);
+      try {
+         var bytesOption = await ReadBytesAsync(cancellationToken);
+         return !bytesOption.Out(out var bytes) ? Option<T>.Fail() : Option<T>.Ok(serializer.Deserialize<T>(bytes));
+      } catch {
+         return Option<T>.Fail();
+      }
    }
 
    #endregion
 
    #region STATIC
 
-   public static FileNotFoundException GetNotFoundException(string path) {
+   public static FileNotFoundException NotFoundException(string path) {
       return new FileNotFoundException($"File not found", path);
    }
 
-   public static VirtualFile? GetFile(string path) {
-      return File.Exists(path) ? Cache.GetOrAdd(path, x => new VirtualFile(x)) : null;
+   public static Option<VirtualFile> GetFile(string path) {
+      return !File.Exists(path)
+         ? Option<VirtualFile>.Fail()
+         : Option<VirtualFile>.Ok(Cache.GetOrAdd(path, x => new VirtualFile(x)));
    }
 
-   public static VirtualFile GetOrCreate(string path) {
-      return Cache.GetOrAdd(path, x => File.Exists(x) ? new VirtualFile(path) : CreateFile(path));
+   public static Option<VirtualFile> GetOrCreate(string path) {
+      return Option<VirtualFile>.Ok(Cache.GetOrAdd(path,
+         x => File.Exists(x) ? new VirtualFile(path) : CreateFile(path).Content));
    }
 
-   private static VirtualFile CreateFile(string path) {
-      File.Create(path).Dispose();
-      var value = new VirtualFile(path);
-      Cache.TryAdd(path, value);
-      return value;
+   private static Option<VirtualFile> CreateFile(string path) {
+      try {
+         File.Create(path).Dispose();
+         var value = new VirtualFile(path);
+         Cache.TryAdd(path, value);
+         return Option<VirtualFile>.Ok(value);
+      } catch {
+         return Option<VirtualFile>.Fail();
+      }
    }
 
    #endregion

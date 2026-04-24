@@ -1,13 +1,17 @@
-﻿name: Deploy to nuget
+﻿name: XUnit testing
 
 on:
   push:
-    branches: 
+    branches:
       - "main"
+      - "dev"
+    pull_requests:
 
 env:
-  PROJECT_LIB_PATH: 'src/PupaLib.FileIO/PupaLib.FileIO.csproj'
   PROJECT_TESTS_PATH: 'src/PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -15,24 +19,30 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
-      - name: "Setup dotnet"
-        uses: actions/setup-dotnet@v3
+      - name: "Setup .NET 10"
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
-      - name: "Resotore lib project"
-        run: dotnet restore ${{ env.PROJECT_LIB_PATH }}
+      - name: "Cache Nuget"
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/pacakges
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
 
-      - name: "Resotore test project"
-        run: dotnet restore ${{ env.PROJECT_TESTS_PATH }}
+      - name: "Resotre all projects in solution"
+        run: dotnet restore
 
-      - name: "Build lib project"
-        run: dotnet build ${{ env.PROJECT_LIB_PATH }}
-
-      - name: "Build test project"
-        run: dotnet build ${{ env.PROJECT_TESTS_PATH }}
+      - name: "Build all projects in solution"
+        run: dotnet build --no-restore --configuration Release
 
       - name: "Run test"
-        run: dotnet test ${{ env.PROJECT_TESTS_PATH }} --no-build --verbosity normal
+        run: dotnet test ${{ env.PROJECT_TESTS_PATH }} --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-report.trx"
+
+      - name: "Upload test report"
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: '**/*.trx'

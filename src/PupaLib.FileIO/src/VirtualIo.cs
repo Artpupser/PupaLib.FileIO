@@ -14,6 +14,11 @@ public static class VirtualIo {
    /// Automatically initialized from <see cref="RootPath"/>.
    /// Throws <see cref="DirectoryNotFoundException"/> if the directory is not accessible
    /// </summary>
-   public static readonly VirtualFolder RootFolder =
-      VirtualFolder.GetFolder(RootPath) ?? throw VirtualFolder.GetNotFoundException(RootPath);
+   public static readonly VirtualFolder RootFolder;
+
+   static VirtualIo() {
+      var optionFolder = VirtualFolder.GetFolder(RootPath);
+      if (!optionFolder.Out(out var folder)) throw VirtualFolder.NotFoundException(RootPath);
+      RootFolder = folder;
+   }
 }

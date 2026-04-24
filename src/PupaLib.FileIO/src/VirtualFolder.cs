@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 
+using PupaLib.Core;
+
 namespace PupaLib.FileIO;
 
 public class VirtualFolder {
@@ -12,7 +14,7 @@ public class VirtualFolder {
 
    public string MyPath => _info.FullName;
 
-   public VirtualFolder? Parent => GetFolder(_info.Parent?.FullName!);
+   public Option<VirtualFolder> Parent => GetFolder(_info.Parent?.FullName!);
 
    public string Name => _info.Name;
 
@@ -36,31 +38,36 @@ public class VirtualFolder {
    }
 
 
-   public VirtualFolder GetOrCreateFolderIn(string pathIn) {
+   public Option<VirtualFolder> GetOrCreateFolderIn(string pathIn) {
       return GetOrCreateFolder(BuildPath(pathIn));
    }
 
-   public VirtualFolder? GetFolderIn(string pathIn) {
+   public Option<VirtualFolder> GetFolderIn(string pathIn) {
       return GetFolder(BuildPath(pathIn));
    }
 
-   public VirtualFile GetOrCreateFileIn(string pathIn) {
+   public Option<VirtualFile> GetOrCreateFileIn(string pathIn) {
       return VirtualFile.GetOrCreate(BuildPath(pathIn));
    }
 
-   public VirtualFile? GetFileIn(string pathIn) {
+   public Option<VirtualFile> GetFileIn(string pathIn) {
       return VirtualFile.GetFile(BuildPath(pathIn));
    }
 
    public IEnumerable<VirtualFile> EnumerateFiles(SearchOption option) {
-      return _info.EnumerateFiles("*", option)
-         .Select(x => VirtualFile.GetFile(x.FullName))
-         .Where(x => x != null)!;
+      var contents = new List<VirtualFile>(64);
+      foreach (var fileInfo in _info.EnumerateFiles("*", option))
+         if (VirtualFile.GetFile(fileInfo.FullName) is { Success: true } file)
+            contents.Add(file.Content);
+      return contents;
    }
 
    public IEnumerable<VirtualFolder> EnumerateFolders(SearchOption option) {
-      return _info.EnumerateDirectories("*", option)
-         .Select(x => GetFolder(x.FullName)!);
+      var contents = new List<VirtualFolder>(64);
+      foreach (var directoryInfo in _info.EnumerateDirectories("*", option))
+         if (GetFolder(directoryInfo.FullName) is { Success: true } folder)
+            contents.Add(folder.Content);
+      return contents;
    }
 
    public int GetDirectoriesCount(SearchOption option = SearchOption.TopDirectoryOnly) {
@@ -81,23 +88,30 @@ public class VirtualFolder {
 
    #region STATIC
 
-   public static DirectoryNotFoundException GetNotFoundException(string path) {
+   public static DirectoryNotFoundException NotFoundException(string path) {
       return new DirectoryNotFoundException($"Directory not found {path}");
    }
 
-   public static VirtualFolder? GetFolder(string? path) {
-      return Directory.Exists(path) ? Cache.GetOrAdd(path, s => new VirtualFolder(s)) : null;
+   public static Option<VirtualFolder> GetFolder(string? path) {
+      return Directory.Exists(path)
+         ? Option<VirtualFolder>.Ok(Cache.GetOrAdd(path, s => new VirtualFolder(s)))
+         : Option<VirtualFolder>.Fail();
    }
 
-   public static VirtualFolder GetOrCreateFolder(string path) {
-      return Cache.GetOrAdd(path, s => Directory.Exists(s) ? new VirtualFolder(path) : CreateFolder(path));
+   public static Option<VirtualFolder> GetOrCreateFolder(string path) {
+      return Option<VirtualFolder>.Ok(Cache.GetOrAdd(path,
+         keyPath => Directory.Exists(keyPath) ? new VirtualFolder(path) : CreateFolder(path).Content));
    }
 
-   private static VirtualFolder CreateFolder(string path) {
-      Directory.CreateDirectory(path);
-      var value = new VirtualFolder(path);
-      Cache.TryAdd(path, value);
-      return value;
+   private static Option<VirtualFolder> CreateFolder(string path) {
+      try {
+         Directory.CreateDirectory(path);
+         var value = new VirtualFolder(path);
+         Cache.TryAdd(path, value);
+         return Option<VirtualFolder>.Ok(value);
+      } catch {
+         return Option<VirtualFolder>.Fail();
+      }
    }
 
    #endregion

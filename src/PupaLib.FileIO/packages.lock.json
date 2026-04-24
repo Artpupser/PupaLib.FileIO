@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "PupaLib.Core": {
+        "type": "Direct",
+        "requested": "[0.0.2, )",
+        "resolved": "0.0.2",
+        "contentHash": "CiGPiRbkUOaJD7Rr5pH2cDeF9kXr10AxqlsKNl5zJ+W6Mv39O0ri3FV0Oy+rNEqSTRcnZrNk5ummC1T+Ryjo7Q=="
+      }
+    }
+  }
+}
