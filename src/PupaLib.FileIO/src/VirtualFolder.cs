@@ -38,7 +38,7 @@ public class VirtualFolder {
    }
 
 
-   public VirtualFolder GetOrCreateFolderIn(string pathIn) {
+   public Option<VirtualFolder> GetOrCreateFolderIn(string pathIn) {
       return GetOrCreateFolder(BuildPath(pathIn));
    }
 
@@ -46,7 +46,7 @@ public class VirtualFolder {
       return GetFolder(BuildPath(pathIn));
    }
 
-   public VirtualFile GetOrCreateFileIn(string pathIn) {
+   public Option<VirtualFile> GetOrCreateFileIn(string pathIn) {
       return VirtualFile.GetOrCreate(BuildPath(pathIn));
    }
 
@@ -98,15 +98,20 @@ public class VirtualFolder {
          : Option<VirtualFolder>.Fail();
    }
 
-   public static VirtualFolder GetOrCreateFolder(string path) {
-      return Cache.GetOrAdd(path, s => Directory.Exists(s) ? new VirtualFolder(path) : CreateFolder(path));
+   public static Option<VirtualFolder> GetOrCreateFolder(string path) {
+      return Option<VirtualFolder>.Ok(Cache.GetOrAdd(path,
+         keyPath => Directory.Exists(keyPath) ? new VirtualFolder(path) : CreateFolder(path).Content));
    }
 
-   private static VirtualFolder CreateFolder(string path) {
-      Directory.CreateDirectory(path);
-      var value = new VirtualFolder(path);
-      Cache.TryAdd(path, value);
-      return value;
+   private static Option<VirtualFolder> CreateFolder(string path) {
+      try {
+         Directory.CreateDirectory(path);
+         var value = new VirtualFolder(path);
+         Cache.TryAdd(path, value);
+         return Option<VirtualFolder>.Ok(value);
+      } catch (Exception e) {
+         return Option<VirtualFolder>.Fail();
+      }
    }
 
    #endregion

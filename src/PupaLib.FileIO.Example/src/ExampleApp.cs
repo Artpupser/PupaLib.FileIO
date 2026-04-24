@@ -42,7 +42,9 @@ public static class ExampleApp {
    /// Creates a file if it doesn't exist and shows file info.
    /// </summary>
    public static void Example1() {
-      var file = VirtualIo.RootFolder.GetOrCreateFileIn(ExampleFileName);
+      var fileOption = VirtualIo.RootFolder.GetOrCreateFileIn(ExampleFileName);
+      if (!fileOption.Out(out var file))
+         return;
       Console.Write($"{file.GetInfo()}\n");
    }
 
@@ -91,7 +93,8 @@ public static class ExampleApp {
    /// </summary>
    public static void Example4() {
       var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
-      if (!fileOption.Out(out var file)) return;
+      if (!fileOption.Out(out var file))
+         return;
       file.DeleteMe();
       Console.Write($"File deleted, exists: {file.Exists}\n");
    }
@@ -100,7 +103,9 @@ public static class ExampleApp {
    /// Creates example folder if it doesn't exist.
    /// </summary>
    public static void Example5() {
-      var folder = VirtualIo.RootFolder.GetOrCreateFolderIn(ExampleFolderName);
+      var folderOption = VirtualIo.RootFolder.GetOrCreateFolderIn(ExampleFolderName);
+      if (!folderOption.Out(out var folder))
+         return;
       Console.Write($"{folder.GetInfo()}\n");
    }
 
@@ -109,7 +114,8 @@ public static class ExampleApp {
    /// </summary>
    public static void Example6() {
       var folderOption = VirtualIo.RootFolder.GetFolderIn(ExampleFolderName);
-      if (!folderOption.Out(out var folder)) return;
+      if (!folderOption.Out(out var folder))
+         return;
       folder.DeleteMe();
       Console.Write($"Folder deleted, exists: {folder.Exists}\n");
    }

@@ -3,15 +3,9 @@
 namespace PupaLib.FileIO.Tests.Models;
 
 [Serializable]
-public sealed class TestObjectFirst {
-   [JsonConstructor]
-   public TestObjectFirst(string name, List<int> numbers, string lastname) {
-      Name = name;
-      Numbers = numbers;
-      LastName = lastname;
-   }
-
-   [JsonPropertyName("Name")] public string Name { get; }
-   [JsonPropertyName("Numbers")] public List<int> Numbers { get; }
-   [JsonPropertyName("Lastname")] public string LastName { get; }
+[method: JsonConstructor]
+public sealed class TestObjectFirst(string name, List<int> numbers, string lastname) {
+   [JsonPropertyName("Name")] public string Name { get; } = name;
+   [JsonPropertyName("Numbers")] public List<int> Numbers { get; } = numbers;
+   [JsonPropertyName("Lastname")] public string LastName { get; } = lastname;
 }

@@ -136,15 +136,20 @@ public class VirtualFile {
          : Option<VirtualFile>.Ok(Cache.GetOrAdd(path, x => new VirtualFile(x)));
    }
 
-   public static VirtualFile GetOrCreate(string path) {
-      return Cache.GetOrAdd(path, x => File.Exists(x) ? new VirtualFile(path) : CreateFile(path));
+   public static Option<VirtualFile> GetOrCreate(string path) {
+      return Option<VirtualFile>.Ok(Cache.GetOrAdd(path,
+         x => File.Exists(x) ? new VirtualFile(path) : CreateFile(path).Content));
    }
 
-   private static VirtualFile CreateFile(string path) {
-      File.Create(path).Dispose();
-      var value = new VirtualFile(path);
-      Cache.TryAdd(path, value);
-      return value;
+   private static Option<VirtualFile> CreateFile(string path) {
+      try {
+         File.Create(path).Dispose();
+         var value = new VirtualFile(path);
+         Cache.TryAdd(path, value);
+         return Option<VirtualFile>.Ok(value);
+      } catch {
+         return Option<VirtualFile>.Fail();
+      }
    }
 
    #endregion
