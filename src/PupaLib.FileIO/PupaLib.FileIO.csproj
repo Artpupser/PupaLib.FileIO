@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
 
         <PackageId>PupaLib.FileIO</PackageId>
-        <Version>1.2.0</Version>
+        <Version>1.3.0</Version>
         <Authors>Artpupser</Authors>
         <Owners>Artpupser</Owners>
         <Company>Artpupser</Company>

@@ -17,6 +17,8 @@
 
 </div>
 
+<div align="center">
+
 ## 📜 Content
 
 - [🗝️ Key Features](#-key-features)
@@ -24,6 +26,8 @@
 - [💡 Usage](#-usage)
 - [🗃️ Devlog](#-devlog)
 - [⚖️️ License](#-license)
+
+</div>
 
 ## 🗝️ Key Features
 
