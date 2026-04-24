@@ -16,9 +16,14 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>File, Folder, Directory, Create, Delete, Change, Simple, Lib</PackageTags>
         <RepositoryUrl>https://github.com/Artpupser/PupaLib.FileIO.git</RepositoryUrl>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
     <ItemGroup>
         <None Include="../../README.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="PupaLib.Core" Version="0.0.2"/>
     </ItemGroup>
 </Project>
