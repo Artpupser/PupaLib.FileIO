@@ -10,8 +10,8 @@ public class FilesTest {
 
    [Fact(DisplayName = "Creating file")]
    public void Should_CreateFile_When_ValidPath() {
-      var file = VirtualIo.RootFolder.GetOrCreateFileIn(FileName);
-      Assert.True(file.Exists, "File was not correct");
+      var fileOption = VirtualIo.RootFolder.GetOrCreateFileIn(FileName);
+      Assert.True(fileOption, "File was not correct");
    }
 
    [Fact(DisplayName = "Load file")]
@@ -31,9 +31,9 @@ public class FilesTest {
       Assert.True(fileOption, "File was not correct");
       if (!fileOption.Out(out var file))
          return;
-      file!.WriteString(content);
+      file.WriteString(content);
       var readOperationOption = file.ReadString();
-      Assert.True(readOperationOption, $"Reading operation is bad");
+      Assert.True(readOperationOption, "Reading operation is bad");
       if (!readOperationOption.Out(out var str))
          return;
       Assert.True(str == content, $"File is empty, {readOperationOption} != {content}");
@@ -46,23 +46,28 @@ public class FilesTest {
    public void Should_WriteAndReadFileT_When_ValidPathAndAlreadyCreated(string name,
       string lastname) {
       var fileOption = VirtualIo.RootFolder.GetOrCreateFileIn(FileName);
-      Assert.True(fileCorrect, "File was not correct");
-      if (!fileCorrect) return;
+      Assert.True(fileOption, "File was not correct");
+      if (!fileOption.Out(out var file))
+         return;
       var content = new TestObjectSecond(name, lastname);
-      file!.WriteTContent(content, new JsonSystemSerializer());
-      var reads = file.ReadTContent<TestObjectSecond>(new JsonSystemSerializer());
+      file.WriteTContent(content, new JsonSystemSerializer());
+      var readOperationOption = file.ReadTContent<TestObjectSecond>(new JsonSystemSerializer());
+      Assert.True(readOperationOption,
+         "Read T content failed.");
+      if (!readOperationOption.Out(out var reads))
+         return;
       Assert.True(reads.Name == content.Name && reads.LastName == content.LastName,
-         $"File is empty, {reads} != {content}");
+         $"File is empty, {readOperationOption} != {content}");
    }
 
    [Fact(DisplayName = "Delete file")]
    public void Should_DeleteFile_When_ValidPathAndAlreadyCreated() {
       VirtualIo.RootFolder.GetOrCreateFileIn(FileName);
-      var file = VirtualIo.RootFolder.GetFileIn(FileName);
-      var fileCorrect = FileIsCorrect(file);
-      Assert.True(fileCorrect);
-      if (!fileCorrect) return;
-      file!.DeleteMe();
+      var fileOption = VirtualIo.RootFolder.GetFileIn(FileName);
+      Assert.True(fileOption);
+      if (!fileOption.Out(out var file))
+         return;
+      file.DeleteMe();
       Assert.False(file.Exists);
    }
 }

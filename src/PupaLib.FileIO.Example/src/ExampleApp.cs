@@ -15,12 +15,12 @@ public static class ExampleApp {
    /// <summary>
    /// Sample filename used in examples: "file.txt".
    /// </summary>
-   public const string ExampleFileName = "file.txt";
+   private const string ExampleFileName = "file.txt";
 
    /// <summary>
    /// Sample folder name used in examples: "folder".
    /// </summary>
-   public const string ExampleFolderName = "folder";
+   private const string ExampleFolderName = "folder";
 
    /// <summary>
    /// Runs all FileIO examples sequentially.
@@ -41,7 +41,7 @@ public static class ExampleApp {
    /// <summary>
    /// Creates a file if it doesn't exist and shows file info.
    /// </summary>
-   public static void Example1() {
+   public static void Example1(CancellationToken cancellationToken = default) {
       var fileOption = VirtualIo.RootFolder.GetOrCreateFileIn(ExampleFileName);
       if (!fileOption.Out(out var file))
          return;
@@ -51,7 +51,7 @@ public static class ExampleApp {
    /// <summary>
    /// Loads existing file or shows null if not found.
    /// </summary>
-   public static async Task Example2(CancellationToken cancellationToken) {
+   public static async Task Example2(CancellationToken cancellationToken = default) {
       var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
       if (fileOption.Out(out var file))
          Console.Write($"{file.GetInfo()}\n");
@@ -61,7 +61,7 @@ public static class ExampleApp {
    /// <summary>
    /// Writes and reads plain text content to/from file.
    /// </summary>
-   public static async Task Example3_1(CancellationToken cancellationToken) {
+   public static async Task Example3_1(CancellationToken cancellationToken = default) {
       var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
       if (fileOption.Out(out var file)) {
          const string content = "Hello world!";
@@ -76,7 +76,7 @@ public static class ExampleApp {
    /// <summary>
    /// Serializes and deserializes object to/from JSON file.
    /// </summary>
-   public static async Task Example3_2(CancellationToken cancellationToken) {
+   public static async Task Example3_2(CancellationToken cancellationToken = default) {
       var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
       if (fileOption.Out(out var file)) {
          var content = new ExampleObject("Name", "Lastname", [12, 53, 47]);
