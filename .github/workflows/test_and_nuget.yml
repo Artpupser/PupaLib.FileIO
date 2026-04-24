@@ -14,7 +14,8 @@ env:
   GITHUB_USERNAME: "Artpupser"
   
 permissions:
-  contents: read  
+  contents: read
+  packages: write
   
 jobs:
   test:
