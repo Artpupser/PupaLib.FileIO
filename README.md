@@ -17,8 +17,6 @@
 
 </div>
 
-<div align="center">
-
 ## 📜 Content
 
 - [🗝️ Key Features](#-key-features)
@@ -27,9 +25,10 @@
 - [🗃️ Devlog](#-devlog)
 - [⚖️️ License](#-license)
 
-</div>
 
 ## 🗝️ Key Features
+
+<div align="center">
 
 | 🏆 Feature                  | 📝 Description                                                            |
 |-----------------------------|---------------------------------------------------------------------------|
@@ -37,6 +36,8 @@
 | **Versatile Functionality** | - Create new files and folders 📂<br>- Read and write data efficiently 📄 |
 | **Cross-Platform Support**  | Works seamlessly across different operating systems 🌍                    |
 | **Lightweight**             | Minimal impact on performance ⚡                                           |
+
+</div>
 
 ## 🚀 Installation
 
