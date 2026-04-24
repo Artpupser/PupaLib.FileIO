@@ -50,8 +50,8 @@ public static class ExampleApp {
    /// Loads existing file or shows null if not found.
    /// </summary>
    public static async Task Example2(CancellationToken cancellationToken) {
-      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
-      if (file is not null)
+      var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (fileOption.Out(out var file))
          Console.Write($"{file.GetInfo()}\n");
       await Task.CompletedTask;
    }
@@ -60,8 +60,8 @@ public static class ExampleApp {
    /// Writes and reads plain text content to/from file.
    /// </summary>
    public static async Task Example3_1(CancellationToken cancellationToken) {
-      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
-      if (file is not null) {
+      var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (fileOption.Out(out var file)) {
          const string content = "Hello world!";
          await file.WriteStringAsync(content, cancellationToken);
          Console.Write(
@@ -75,8 +75,8 @@ public static class ExampleApp {
    /// Serializes and deserializes object to/from JSON file.
    /// </summary>
    public static async Task Example3_2(CancellationToken cancellationToken) {
-      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
-      if (file is not null) {
+      var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (fileOption.Out(out var file)) {
          var content = new ExampleObject("Name", "Lastname", [12, 53, 47]);
          await file.WriteTContentAsync(content, new JsonSystemSerializer(), cancellationToken);
          Console.Write(
@@ -90,8 +90,8 @@ public static class ExampleApp {
    /// Deletes the example file.
    /// </summary>
    public static void Example4() {
-      var file = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
-      if (file is null) return;
+      var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
+      if (!fileOption.Out(out var file)) return;
       file.DeleteMe();
       Console.Write($"File deleted, exists: {file.Exists}\n");
    }
@@ -108,8 +108,8 @@ public static class ExampleApp {
    /// Deletes the example folder.
    /// </summary>
    public static void Example6() {
-      var folder = VirtualIo.RootFolder.GetFolderIn(ExampleFolderName);
-      if (folder is null) return;
+      var folderOption = VirtualIo.RootFolder.GetFolderIn(ExampleFolderName);
+      if (!folderOption.Out(out var folder)) return;
       folder.DeleteMe();
       Console.Write($"Folder deleted, exists: {folder.Exists}\n");
    }

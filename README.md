@@ -11,7 +11,6 @@
 ![NuGet](https://img.shields.io/nuget/v/PupaLib.FileIO.svg?style=for-the-badge)
 ![.NET](https://img.shields.io/badge/.NET-10.0-blue?style=for-the-badge)
 
-
 #### [PupaLib.FileIO](https://www.nuget.org/packages/PupaLib.FileIO) is an incredibly simple library for working with files and folders. 🎯
 
 <img src="https://github.com/Artpupser/PupaLib.FileIO/blob/main/assets/banner.jpg" style="border-radius: 20px; max-height: 500px">
@@ -19,6 +18,7 @@
 </div>
 
 ## 📜 Content
+
 - [🗝️ Key Features](#-key-features)
 - [🚀️ Installation](#-installation)
 - [🗃️ Devlog](#-devlog)
@@ -147,8 +147,15 @@ if(folder is not null) {
 
 ## 🗃️ Devlog
 
+### 1.2.2
+
+- Added: field 'RestorePackagesWithLockFile' in 'PropertyGroup' -> *.csproj
+- Added: PupaLib.Core
+- Changes: Operations through Option<T>
+
 ### 1.2.1
-- Changed .NET SDK version, .net8.0 -> .net10.0 
+
+- Changed .NET SDK version, .net8.0 -> .net10.0
 
 ## ⚖️ License
 
