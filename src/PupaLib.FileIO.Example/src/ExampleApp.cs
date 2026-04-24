@@ -30,7 +30,7 @@ public static class ExampleApp {
       cts.CancelAfter(TimeSpan.FromSeconds(10));
       Console.WriteLine("Hello PupaLib.FileIO.Example!");
       Example1();
-      await Example2(cts.Token);
+      await Example2();
       await Example3_1(cts.Token);
       await Example3_2(cts.Token);
       Example4();
@@ -41,7 +41,7 @@ public static class ExampleApp {
    /// <summary>
    /// Creates a file if it doesn't exist and shows file info.
    /// </summary>
-   public static void Example1(CancellationToken cancellationToken = default) {
+   public static void Example1() {
       var fileOption = VirtualIo.RootFolder.GetOrCreateFileIn(ExampleFileName);
       if (!fileOption.Out(out var file))
          return;
@@ -51,7 +51,7 @@ public static class ExampleApp {
    /// <summary>
    /// Loads existing file or shows null if not found.
    /// </summary>
-   public static async Task Example2(CancellationToken cancellationToken = default) {
+   public static async Task Example2() {
       var fileOption = VirtualIo.RootFolder.GetFileIn(ExampleFileName);
       if (fileOption.Out(out var file))
          Console.Write($"{file.GetInfo()}\n");
