@@ -10,6 +10,9 @@ on:
 env:
   PROJECT_TESTS_PATH: 'src/PupaLib.FileIO.Tests/PupaLib.FileIO.Tests.csproj'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: "Test"
